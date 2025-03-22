@@ -1,44 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Solar Energy</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Giám sát hệ thống điện mặt trời</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+        .box {
+            width: 180px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .box img {
+            width: 50px;
+        }
+        .value {
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Smart Solar Energy Solutions</h1>
-        <nav>
-            <ul>
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <section id="about">
-        <h2>About Us</h2>
-        <p>We provide sustainable solar energy solutions for homes and businesses.</p>
-    </section>
-
-    <section id="services">
-        <h2>Our Services</h2>
-        <ul>
-            <li>Solar Panel Installation</li>
-            <li>Solar System Maintenance</li>
-            <li>Energy Efficiency Consulting</li>
-        </ul>
-    </section>
-
-    <section id="contact">
-        <h2>Contact Us</h2>
-        <p>Email us at: <a href="mailto:info@smartsolar.com">info@smartsolar.com</a></p>
-    </section>
-
-    <footer>
-        <p>&copy; 2025 Smart Solar Energy Solutions</p>
-    </footer>
+    <h2>Giám sát hệ thống điện mặt trời</h2>
+    <div class="container">
+        <div class="box">
+            <img src="solar.png" alt="PV">
+            <p>PV đầu vào</p>
+            <p class="value" id="pv-power">5422W</p>
+        </div>
+        <div class="box">
+            <img src="battery.png" alt="Battery">
+            <p>Pin lưu trữ</p>
+            <p class="value" id="battery-power">1608W</p>
+        </div>
+        <div class="box">
+            <img src="load.png" alt="Load">
+            <p>Phụ tải điện</p>
+            <p class="value" id="load-power">15W</p>
+        </div>
+        <div class="box">
+            <img src="grid.png" alt="Grid">
+            <p>Nguồn điện lưới</p>
+            <p class="value" id="grid-power">-8W</p>
+        </div>
+        <div class="box">
+            <img src="inverter.png" alt="Inverter">
+            <p>Công suất hòa lưới</p>
+            <p class="value" id="inverter-power">3418W</p>
+        </div>
+    </div>
+    <script>
+        function updateData() {
+            fetch('http://esp32.local/data')  // Thay URL này bằng địa chỉ ESP32
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('pv-power').innerText = data.pv + 'W';
+                    document.getElementById('battery-power').innerText = data.battery + 'W';
+                    document.getElementById('load-power').innerText = data.load + 'W';
+                    document.getElementById('grid-power').innerText = data.grid + 'W';
+                    document.getElementById('inverter-power').innerText = data.inverter + 'W';
+                })
+                .catch(error => console.log('Lỗi lấy dữ liệu:', error));
+        }
+        setInterval(updateData, 5000); // Cập nhật mỗi 5 giây
+    </script>
 </body>
 </html>
