@@ -1,1 +1,1 @@
-# smartsolar
+# my-lumetre-style-website
